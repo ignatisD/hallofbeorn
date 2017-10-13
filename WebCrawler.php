@@ -317,68 +317,11 @@ class WebCrawler
         $html = '<!DOCTYPE html><html><head>
         <style>
         .page{
-            position: relative;
-        }
-        .absolute-top{
-            position:absolute;
-            width: 1240px;
-            top: 0;
-        }
-        .absolute-bottom{
-            position:absolute;
-            width: 1240px;
-            bottom: 0;
-        }
-        .page span{
-            position: relative;
-            top:0;
-            width: 248px;
-        }
-        .page span:nth-child(1){
-            left:0;
-        }
-        .page span:nth-child(2){
-            left:492px;
-        }
-        .page span:nth-child(3){
-            left:984px;
-        }
-        .page span:before{
-           position: absolute;
-           top: -20px;
-           bottom: -20px;
-           left: -1px;
-           right: -248px;
-           content: " ";
-           border-right: 1px solid black;
-        }
-        .page span:after{
-           position: absolute;
-           top: -20px;
-           bottom: -20px;
-           right: -1px;
-           content: " ";
-           border-left: 1px solid black;
+            height: 100%;
         }
         .row{
             height: 349px;
             position: relative;
-        }
-        .row:before{
-           position: absolute;
-           top: -1px;
-           left: -20px;
-           right: -20px;
-           content: " ";
-           border: 1px solid black;
-        }
-        .row:after{
-           position: absolute;
-           bottom: -1px;
-           left: -20px;
-           right: -20px;
-           content: " ";
-           border: 1px solid black; 
         }
         .page-change{
             page-break-after: always;
@@ -386,16 +329,6 @@ class WebCrawler
         </style>
         </head>
         <body><div class="page">
-            <div class="absolute-top">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <div class="absolute-bottom">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
         <div class="row">';
         $i = 1;
         $y = 1;
@@ -429,17 +362,7 @@ class WebCrawler
                 $html .= '</div>';
             }
             if($i === 25){
-                $html .= '</div><div class="page-change"></div><div class="page">            
-            <div class="absolute-top">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <div class="absolute-bottom">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>';
+                $html .= '</div><div class="page-change"></div><div class="page">';
                 $i = 0;
             }
             if($y === 5){
