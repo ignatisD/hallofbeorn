@@ -26,15 +26,15 @@ class WebCrawler
     /**
      * WebCrawler constructor.
      * @param string $url
-     * @param int $debug
-     * @param int $proxy
+     * @param string $set
      */
-    function __construct($url = '', $debug = 0, $proxy = null)
+    function __construct($url = '', $set = '')
     {
         $this->starttime = microtime(true);
         $this->url = $url;
-        $this->debug = $debug;
-        $this->proxy = $proxy;
+        if(!empty($set)){
+            $this->url .= urlencode($set);
+        }
     }
 
 
@@ -73,7 +73,7 @@ class WebCrawler
             CURLOPT_FOLLOWLOCATION => 1,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
+            CURLOPT_TIMEOUT => 60,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_COOKIEFILE => "", //in memory cookies
@@ -209,12 +209,16 @@ class WebCrawler
 
     /**
      * You can specify the url here if the class was not instantiated with a url
-     * @param null $url
+     * @param string $url
+     * @param string $set
      * @return array|mixed
      */
-    public function retrieveImages($url = null){
+    public function retrieveImages($url = '', $set = ''){
         if(!empty($url)){
             $this->url = $url;
+            if(!empty($set)){
+                $this->url .= urlencode($set);
+            }
         }
         $data = array();
         $response = $this->post_curl($this->url, array(), null, null, "GET", $this->proxy);
