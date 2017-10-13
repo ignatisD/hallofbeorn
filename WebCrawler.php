@@ -315,23 +315,33 @@ class WebCrawler
         $opt["isRemoteEnabled"] = true;
         $dompdf = new Dompdf($opt);
         $html = '<!DOCTYPE html><html><head></head>
-            <body style="padding: 0.5cm 0.5cm 0.5cm 0.5cm">
-                <div style="width: 100%;height: 100%;">';
-        $i = 0;
+            <body><div style="height: 349px">';
+        $i = 1;
+        $y = 1;
         foreach($images as $image){
             if(preg_match("/\-[1-9][AB]_\(/",$image["label"])){
                 $dimensions = 'width="348"';
-                $html .= '<img src="'.$image["src"].'" style="transform:rotate(90deg);margin: -51px -51px -51px -51px;" alt="'.$image["label"].'" '.$dimensions.' />';
+                $html .= '<img src="'.$image["src"].'" style="transform:rotate(90deg);float:left; margin: 50px -51px 0 -51px;" alt="'.$image["label"].'" '.$dimensions.' />';
             }else{
                 $dimensions = 'width="246"';
-                $html .= '<img src="'.$image["src"].'" alt="'.$image["label"].'" '.$dimensions.' />';
+                $html .= '<img src="'.$image["src"].'" style="float:left;" alt="'.$image["label"].'" '.$dimensions.' />';
             }
-            if($i % 25 >= 1){
-                $html .= '</div><div style="page-break-before: always;"></div>
-                <div style="width: 100%;height: 100%;">';
+            if($y === 5){
+                $html .= '</div>';
             }
+            if($i === 25){
+                $html .= '<div style="page-break-before: always;"></div>';
+                $i = 0;
+            }
+            if($y === 5){
+                $html .='<div style="height: 349px">';
+                $y = 0;
+            }
+            $i++;
+            $y++;
         }
         $html .= "</div></body></html>";
+//        echo $html;
         $dompdf->loadHtml($html);
         $dompdf->setPaper('b3', 'portrait');
         $dompdf->render();
