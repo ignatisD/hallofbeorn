@@ -5,6 +5,19 @@
  * Date: 13/10/2017
  * Time: 9:24 πμ
  */
+    if(!empty($_POST["url"])){
+        require_once "WebCrawler.php";
+        $url = $_POST["url"];
+        $crawler = new WebCrawler($url, 1);
+        $findImages = $crawler->retrieveImages();
+        if(!empty($findImages["success"]) && sizeof($findImages["images"]) > 0){
+            $crawler->downloadImages($findImages["images"]);
+        }else{
+            echo "<pre>";
+            echo json_encode($findImages, JSON_PRETTY_PRINT);
+            echo "</pre>";
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,30 +29,9 @@
         <title>Document</title>
     </head>
     <body>
-        <form action="./" method="POST">
+        <form action="./" method="POST" target="_blank">
             <input type="text" value="http://hallofbeorn.com/LotR?CardSet=The%20Hunt%20for%20Gollum" name="url" />
             <button type="submit">Submit</button>
         </form>
-        <?php
-        if(!empty($_POST["url"])){
-            require_once "WebCrawler.php";
-            $url = $_POST["url"];
-            $crawler = new WebCrawler($url, 1);
-            $findImages = $crawler->retrieveImages();
-            if(!empty($findImages["success"])){
-                foreach($findImages["images"] as $image){
-                    if(!empty($image["src"]) && !empty($image["label"])){
-                        $folder = 'photos';
-                        $crawler->saveImage($image["src"], $image["label"], $folder);
-                        echo '<img src="'.$folder.'/'.$image["label"].'" alt="'.$image["label"].'" />';
-                    }
-                }
-            }else{
-                echo "<pre>";
-                echo json_encode($findImages, JSON_PRETTY_PRINT);
-                echo "</pre>";
-            }
-        }
-        ?>
     </body>
 </html>

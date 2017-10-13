@@ -275,4 +275,26 @@ class WebCrawler
         file_put_contents($name, file_get_contents($src));
     }
 
+    public function downloadImages($images = array(), $name = "download.zip"){
+        if(empty($images)){
+            die("No images retrieved");
+        }
+        $zip = new ZipArchive();
+        $tmp_file = tempnam('.','');
+
+        if ($zip->open($tmp_file, ZipArchive::CREATE)!==TRUE) {
+            die("Cannot create zip file");
+        }
+        foreach($images as $image){
+            if(!empty($image["src"]) && !empty($image["label"])){
+                $zip->addFromString($image["label"], file_get_contents($image["src"]));
+            }
+        }
+        $zip->close();
+
+        header('Content-Disposition: attachment; filename="'.$name.'"');
+        header('Content-type: application/zip');
+        readfile($tmp_file);
+        unlink($tmp_file);
+    }
 }
