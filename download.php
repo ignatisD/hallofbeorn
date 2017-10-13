@@ -5,6 +5,7 @@
  * Date: 13/10/2017
  * Time: 1:07 μμ
  */
+ ini_set('max_execution_time', 0);
 if(empty($_POST["set"])) {
     die("Which set?");
 }
