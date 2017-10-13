@@ -1,0 +1,12 @@
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Youpie/simple-html-dom"
+        }
+    ],
+    "require": {
+        "dompdf/dompdf": "^0.8.1",
+        "simple-html-dom/simple-html-dom": "^1.5"
+    }
+}

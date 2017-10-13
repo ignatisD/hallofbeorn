@@ -8,7 +8,7 @@
         <title>Document</title>
     </head>
     <body>
-        <form action="./download.php" method="POST" target="_blank">
+        <form id="setForm" name="form" action="./download.php" method="POST" target="_blank">
             <span class="search-filter">
                 <span class="search-label-short">Card Set</span>
                 <select class="search-select" id="CardSet" name="set">
@@ -180,7 +180,46 @@
                     <option value="Among the Outlaws">Among the Outlaws</option>
                 </select>
             </span>
+            <button type="button" onclick="showImages()">Show</button>
             <button type="submit">Download</button>
         </form>
+        <form id="pdfForm" action="./pdf.php" method="POST" target="_blank">
+            <input id="hide" type="hidden" name="set" />
+            <button type="button" onclick="copyValue()">PDF</button>
+        </form>
+        <script>
+            function copyValue(){
+                const CardSet = document.getElementById("CardSet");
+                const hide = document.getElementById("hide");
+                const pdfForm = document.getElementById("pdfForm");
+                hide.value = CardSet.value;
+                pdfForm.submit();
+            }
+            function showImages(){
+                const CardSet = document.getElementById("CardSet");
+                if(!CardSet.value){
+                    return;
+                }
+                var url = "show.php";
+                var formData = new FormData();
+                formData.append("set", CardSet.value);
+                var options = {
+                    method: "POST",
+                    mod: "cors",
+                    body : formData
+                };
+                fetch(url, options)
+                .then(function(response){
+                    return response.json();
+                }).then(function(data){
+                    if(data.success){
+                        console.log(data.images);
+                    }
+                })
+                .catch(function(err){
+                    console.warn(err);
+                })
+            }
+        </script>
     </body>
 </html>

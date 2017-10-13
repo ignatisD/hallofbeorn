@@ -6,7 +6,8 @@
  * Date: 13/10/2017
  * Time: 09:12
  */
-require_once "simple_html_dom.php";
+require_once "vendor/autoload.php";
+require_once "vendor/simple-html-dom/simple-html-dom/simple_html_dom.php";
 
 
 /**
@@ -14,6 +15,7 @@ require_once "simple_html_dom.php";
  *
  * Base class containing the necessary methods to crawl a page
  */
+use Dompdf\Dompdf;
 
 class WebCrawler
 {
@@ -279,10 +281,11 @@ class WebCrawler
         file_put_contents($name, file_get_contents($src));
     }
 
-    public function downloadImages($images = array(), $name = "download.zip"){
+    public function downloadImages($images = array(), $name = "download"){
         if(empty($images)){
             die("No images retrieved");
         }
+        $name = $name.".zip";
         $zip = new ZipArchive();
         $tmp_file = tempnam('.','');
 
@@ -300,5 +303,40 @@ class WebCrawler
         header('Content-type: application/zip');
         readfile($tmp_file);
         unlink($tmp_file);
+    }
+
+    public function createPDF($images = array(), $name = "download"){
+        if(empty($images)){
+            die("No images retrieved");
+        }
+        $name = $name.".pdf";
+
+        // instantiate and use the dompdf class
+        $opt["isRemoteEnabled"] = true;
+        $dompdf = new Dompdf($opt);
+        $html = '<!DOCTYPE html><html><head></head>
+            <body style="padding: 0.5cm 0.5cm 0.5cm 0.5cm">
+                <div style="width: 100%;height: 100%;">';
+        $i = 0;
+        foreach($images as $image){
+            if(preg_match("/\-[1-9][AB]_\(/",$image["label"])){
+                $dimensions = 'width="348"';
+                $html .= '<img src="'.$image["src"].'" style="transform:rotate(90deg);margin: -51px -51px -51px -51px;" alt="'.$image["label"].'" '.$dimensions.' />';
+            }else{
+                $dimensions = 'width="246"';
+                $html .= '<img src="'.$image["src"].'" alt="'.$image["label"].'" '.$dimensions.' />';
+            }
+            if($i % 25 >= 1){
+                $html .= '</div><div style="page-break-before: always;"></div>
+                <div style="width: 100%;height: 100%;">';
+            }
+        }
+        $html .= "</div></body></html>";
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('b3', 'portrait');
+        $dompdf->render();
+        $options = array();
+        $options["Attachment"] = 0;
+        $dompdf->stream($name, $options);
     }
 }
