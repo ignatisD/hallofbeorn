@@ -317,17 +317,9 @@ class WebCrawler
         $html = '<!DOCTYPE html><html><head>
         <style>
         .page{
-            height: 100%;
-            position: relative;
-        }
-        .grid{
-            position: absolute;
-            top:0;
-            left:0;
-            width: 1700px;
-            height: 2100px;
-            background: url(assets/images/grid.png) no-repeat center center;
-            background-size: contain;
+            width: 1200px;
+            padding: 20px;
+            background: url(assets/images/grid2.png) no-repeat fixed left top;
         }
         .row{
             height: 340px;
@@ -338,7 +330,7 @@ class WebCrawler
         }
         </style>
         </head>
-        <body><div class="page"><div class="grid">
+        <body><div class="page">
         <div class="row">';
         $i = 1;
         $y = 1;
@@ -363,7 +355,7 @@ class WebCrawler
         foreach($images as $image){
             if(preg_match("/\-[1-9][AB]_\(/",$image["label"])){
                 $dimensions = 'width="340"';
-                $html .= '<img src="'.$image["src"].'" style="transform:rotate(90deg);float:left; margin: 50px -51px -2px -50px;" alt="'.$image["label"].'" '.$dimensions.' />';
+                $html .= '<img src="'.$image["src"].'" style="transform:rotate(90deg);float:left; margin: 50px -51px -2px -49px;" alt="'.$image["label"].'" '.$dimensions.' />';
             }else{
                 $dimensions = 'width="240"';
                 $html .= '<img src="'.$image["src"].'" style="float:left;" alt="'.$image["label"].'" '.$dimensions.' />';
@@ -372,7 +364,7 @@ class WebCrawler
                 $html .= '</div>';
             }
             if($i === 25){
-                $html .= '</div><div class="page-change"></div><div class="page"><div class="grid">';
+                $html .= '</div><div class="page-change"></div><div class="page">';
                 $i = 0;
             }
             if($y === 5){
@@ -382,7 +374,7 @@ class WebCrawler
             $i++;
             $y++;
         }
-        $html .= '</div></div></div></body></html>';
+        $html .= '</div></div></body></html>';
         //echo $html;
         $dompdf->loadHtml($html);
         $dompdf->setPaper('b3', 'portrait');
