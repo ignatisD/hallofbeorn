@@ -285,6 +285,7 @@ class WebCrawler
         if(empty($images)){
             die("No images retrieved");
         }
+        ini_set('max_execution_time', 600);
         $name = $name.".zip";
         $zip = new ZipArchive();
         $tmp_file = tempnam('photos','');
@@ -310,7 +311,7 @@ class WebCrawler
             die("No images retrieved");
         }
         $name = $name.".pdf";
-
+        ini_set('max_execution_time', 600);
         // instantiate and use the dompdf class
         $opt["isRemoteEnabled"] = true;
         $dompdf = new Dompdf($opt);
@@ -332,8 +333,6 @@ class WebCrawler
         </head>
         <body><div class="page">
         <div class="row">';
-        $i = 1;
-        $y = 1;
         $moreImages = array();
         foreach($images as $image){
             if(preg_match("/\((.*)\)/", $image["label"], $match)){
@@ -352,30 +351,30 @@ class WebCrawler
             }
         }
         $images = array_merge($images, $moreImages);
+        $i = 1;
+        $y = 1;
         foreach($images as $image){
             if(preg_match("/\-[1-9][AB]_\(/",$image["label"])){
-                $dimensions = 'width="340"';
-                $html .= '<img src="'.$image["src"].'" style="transform:rotate(90deg);float:left; margin: 50px -51px -2px -49px;" alt="'.$image["label"].'" '.$dimensions.' />';
+                $dimensions = 'width="340" height="240"';
+                $html .= '<img src="'.$image["src"].'" style="transform:rotate(90deg);float:left; margin: 50px -50px -50px -50px;" alt="'.$image["label"].'" '.$dimensions.' />';
             }else{
-                $dimensions = 'width="240"';
-                $html .= '<img src="'.$image["src"].'" style="float:left;" alt="'.$image["label"].'" '.$dimensions.' />';
+                $dimensions = 'width="240" height="340"';
+                $html .= '<img src="'.$image["src"].'" style="float:left; margin-bottom: -1px;" alt="'.$image["label"].'" '.$dimensions.' />';
             }
-            if($y === 5){
-                $html .= '</div>';
+            if($y === 5 && $i !== 25){
+                $html .= '</div><div class="row">';
+                $y = 0;
             }
             if($i === 25){
-                $html .= '</div><div class="page-change"></div><div class="page">';
+                $html .= '</div></div><div class="page-change"></div><div class="page"><div class="row">';
                 $i = 0;
-            }
-            if($y === 5){
-                $html .='<div class="row">';
                 $y = 0;
             }
             $i++;
             $y++;
         }
         $html .= '</div></div></body></html>';
-        //echo $html;
+//        echo $html;
         $dompdf->loadHtml($html);
         $dompdf->setPaper('b3', 'portrait');
         $dompdf->render();
