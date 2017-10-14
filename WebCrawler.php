@@ -285,7 +285,7 @@ class WebCrawler
         if(empty($images)){
             die("No images retrieved");
         }
-        ini_set('max_execution_time', 600);
+        ini_set('max_execution_time', 1200); // 20 minutes
         $name = $name.".zip";
         $zip = new ZipArchive();
         $tmp_file = tempnam('photos','');
@@ -311,7 +311,7 @@ class WebCrawler
             die("No images retrieved");
         }
         $name = $name.".pdf";
-        ini_set('max_execution_time', 600);
+        ini_set('max_execution_time', 1200); // 20 minutes
         // instantiate and use the dompdf class
         $opt["isRemoteEnabled"] = true;
         $dompdf = new Dompdf($opt);
@@ -320,7 +320,7 @@ class WebCrawler
         .page{
             width: 1200px;
             padding: 20px;
-            background: url(assets/images/grid2.png) no-repeat fixed left top;
+            background: url(assets/images/grid.png) no-repeat fixed left top;
         }
         .row{
             height: 340px;
