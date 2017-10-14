@@ -32,6 +32,8 @@ class WebCrawler
      */
     function __construct($url = '', $set = '')
     {
+        ini_set('max_execution_time', 1200); // 20 minutes
+        ini_set('memory_limit','1G');
         $this->starttime = microtime(true);
         $this->url = $url;
         if(!empty($set)){
@@ -285,7 +287,6 @@ class WebCrawler
         if(empty($images)){
             die("No images retrieved");
         }
-        ini_set('max_execution_time', 1200); // 20 minutes
         $name = $name.".zip";
         $zip = new ZipArchive();
         $tmp_file = tempnam('photos','');
@@ -311,8 +312,6 @@ class WebCrawler
             die("No images retrieved");
         }
         $name = $name.".pdf";
-        ini_set('max_execution_time', 1200); // 20 minutes
-        ini_set('memory_limit','1G');
         // instantiate and use the dompdf class
         $opt["isRemoteEnabled"] = true;
         $dompdf = new Dompdf($opt);

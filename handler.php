@@ -6,6 +6,8 @@
  * Time: 07:33
  */
 
+ini_set('max_execution_time', 1200); // 20 minutes
+ini_set('memory_limit','1G');
 if(empty($_POST["set"])) {
     header("Content-Type: application/json");
     $data = array();
