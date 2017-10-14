@@ -318,9 +318,19 @@ class WebCrawler
         <style>
         .page{
             height: 100%;
+            position: relative;
+        }
+        .grid{
+            position: absolute;
+            top:0;
+            left:0;
+            width: 1700px;
+            height: 2100px;
+            background: url(assets/images/grid.png) no-repeat center center;
+            background-size: contain;
         }
         .row{
-            height: 349px;
+            height: 340px;
             position: relative;
         }
         .page-change{
@@ -328,7 +338,7 @@ class WebCrawler
         }
         </style>
         </head>
-        <body><div class="page">
+        <body><div class="page"><div class="grid">
         <div class="row">';
         $i = 1;
         $y = 1;
@@ -352,17 +362,17 @@ class WebCrawler
         $images = array_merge($images, $moreImages);
         foreach($images as $image){
             if(preg_match("/\-[1-9][AB]_\(/",$image["label"])){
-                $dimensions = 'width="348"';
-                $html .= '<img src="'.$image["src"].'" style="transform:rotate(90deg);float:left; margin: 50px -51px 0 -51px;" alt="'.$image["label"].'" '.$dimensions.' />';
+                $dimensions = 'width="340"';
+                $html .= '<img src="'.$image["src"].'" style="transform:rotate(90deg);float:left; margin: 50px -51px -2px -50px;" alt="'.$image["label"].'" '.$dimensions.' />';
             }else{
-                $dimensions = 'width="246"';
+                $dimensions = 'width="240"';
                 $html .= '<img src="'.$image["src"].'" style="float:left;" alt="'.$image["label"].'" '.$dimensions.' />';
             }
             if($y === 5){
                 $html .= '</div>';
             }
             if($i === 25){
-                $html .= '</div><div class="page-change"></div><div class="page">';
+                $html .= '</div><div class="page-change"></div><div class="page"><div class="grid">';
                 $i = 0;
             }
             if($y === 5){
@@ -372,8 +382,8 @@ class WebCrawler
             $i++;
             $y++;
         }
-        $html .= '</div></div></body></html>';
-//        echo $html;
+        $html .= '</div></div></div></body></html>';
+        //echo $html;
         $dompdf->loadHtml($html);
         $dompdf->setPaper('b3', 'portrait');
         $dompdf->render();
