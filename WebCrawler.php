@@ -312,6 +312,7 @@ class WebCrawler
         }
         $name = $name.".pdf";
         ini_set('max_execution_time', 1200); // 20 minutes
+        ini_set('memory_limit','1G');
         // instantiate and use the dompdf class
         $opt["isRemoteEnabled"] = true;
         $dompdf = new Dompdf($opt);
