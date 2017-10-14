@@ -48,7 +48,7 @@
 			$scope.images = [];
 			$scope.ajaxLoading = true;
 			var toSend = {
-				url : "/handler.php",
+				url : "handler.php",
 				method : "POST",
 				data : {
 					"action" : "show",
