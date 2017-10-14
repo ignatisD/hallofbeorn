@@ -287,7 +287,7 @@ class WebCrawler
         }
         $name = $name.".zip";
         $zip = new ZipArchive();
-        $tmp_file = tempnam('.','');
+        $tmp_file = tempnam('photos','');
 
         if ($zip->open($tmp_file, ZipArchive::CREATE)!==TRUE) {
             die("Cannot create zip file");
