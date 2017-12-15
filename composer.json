@@ -1,5 +1,8 @@
 {
     "require": {
         "dompdf/dompdf": "^0.8.1"
+    },
+    "autoload": {
+        "files": ["simple_html_dom.php"]
     }
 }

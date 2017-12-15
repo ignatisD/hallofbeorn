@@ -7,7 +7,6 @@
  * Time: 09:12
  */
 require_once "vendor/autoload.php";
-require_once "simple_html_dom.php";
 
 
 /**
